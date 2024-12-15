@@ -1,0 +1,77 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+
+# The lines below are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/need to use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+version: 2
+project_name: example-multi-languages
+
+builds:
+  - id: app1
+    dir: app1
+    binary: app1
+    env:
+      - CGO_ENABLED=0
+    targets:
+      - linux_amd64
+  - id: app2
+    dir: app2
+    binary: app2
+    builder: rust
+    targets:
+      - x86_64-unknown-linux-gnu
+  - id: app3
+    dir: app3
+    binary: app3
+    builder: zig
+    targets:
+      - x86_64-linux
+
+archives:
+  - id: app_archive
+    format: binary
+    builds:
+      - app1
+      - app2
+      - app3
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+
+nfpms:
+  - id: combined
+    package_name: combined
+    builds:
+      - app1
+      - app2
+      - app3
+    vendor: blah
+    homepage: blah.com
+    maintainer: blah <blah@blah.com>
+    description: |-
+      app1 and app2
+    license: MIT
+    formats:
+      - deb
+      - rpm
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
+  footer: >-
+
+    ---
+
+    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
