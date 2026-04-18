@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "gomod"
-    directory: "/"
+    directory: "/app1"
     schedule:
       interval: "monthly"
     labels:
@@ -14,7 +14,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: "cargo"
-    directory: "/"
+    directory: "/app2"
     schedule:
       interval: "monthly"
     labels:
