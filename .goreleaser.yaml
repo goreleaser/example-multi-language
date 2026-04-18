@@ -31,8 +31,8 @@ builds:
 
 archives:
   - id: app_archive
-    format: binary
-    builds:
+    formats: [binary]
+    ids:
       - app1
       - app2
       - app3
@@ -48,7 +48,7 @@ archives:
 nfpms:
   - id: combined
     package_name: combined
-    builds:
+    ids:
       - app1
       - app2
       - app3
